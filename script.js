@@ -197,8 +197,30 @@ const restaurants = [
      })
   }
   const filerAndSearchRestaurants =()=>{
+      const searchQuery = search.value.toLocaleLowerCase();
+      const filterquey  = filter.value
+      const sortquery   = sort.value
+        
+      let filterRestaurants = restaurants.filter((restaurant)=>{
+           return restaurant.name.toLowerCase().includes(searchQuery)&& (filterquey === 'all'|| restaurant.tags.includes(filterquey)) 
+      })
+      if(sortquery === "ratting"){
+          filterRestaurants.sort((a,b)=>{
+             return b.rating - a.rating
+          })
+      }
+      if(sortquery === "eta"){
+         filterRestaurants.sort((a,b)=>{
+             return a.eta - b.eta
+         })
+      }
       
-  }
+       displayRestaurants(filterRestaurants);
+    }
+ 
   window.onload =()=>{
     displayRestaurants(restaurants)
   }
+  search.addEventListener("input",filerAndSearchRestaurants);
+  filter.addEventListener('change',filerAndSearchRestaurants);
+  sort.addEventListener("change",filerAndSearchRestaurants);
